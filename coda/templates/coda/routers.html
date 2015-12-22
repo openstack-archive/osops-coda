@@ -1,0 +1,68 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        var csrftoken = Cookies.get('csrftoken');
+        var project_id = "{{ project_id }}";
+        var region = "{{ region }}";
+        var update_cache = "{{ update_cache }}";
+
+        $.post('/coda/routers/', {csrfmiddlewaretoken: csrftoken, project_id: project_id, region: region, update_cache: update_cache}, function(data, status){
+            var tbody = $('#routers_{{ region }}_{{ project_id }}').find('tbody');
+            data = JSON.parse(data);
+
+            if(data.length > 0) {
+                $.each(data, function (i, router) {
+                    var tr = $("<tr>");
+                    tr.append("<td>" + router.id + "</td>");
+                    tr.append("<td>" + router.name + "</td>");
+                    tr.append("<td>" + router.status + "</td>");
+                    if (router.external_gateway_info != null)
+                        tr.append("<td>" + router.external_gateway_info.network_id + "</td>");
+                    else
+                        tr.append("<td>null</td>");
+
+                    tbody.append(tr);
+                });
+
+                var footerMessage = "Displaying " + data.length + " item";
+                if (data.length > 1)
+                    footerMessage += "s";
+
+                $('#routers_{{ region }}_{{ project_id }}').find('span').text(footerMessage);
+            } else {
+                var resultsDiv = $('#routers_{{ region }}_{{ project_id }}').find('#results');
+                resultsDiv.html("<h4>No Routers in region.</h4>")
+            }
+            $('#routers_{{ region }}_{{ project_id }}').find('#querying').hide();
+            $('#routers_{{ region }}_{{ project_id }}').find('#results').show();
+        });
+    });
+</script>
+
+
+<div id="routers_{{ region }}_{{ project_id }}" class="table_wrapper">
+    <div id="querying">
+        <h3>Querying Routers for region: {{ region }}...</h3>
+    </div>
+    <div id="results" style="display: none">
+        <h3 class="table_title">Routers</h3>
+        <table class="table table-bordered datatable">
+            <thead>
+                <tr>
+                    <th class="normal_column">UUID</th>
+                    <th class="normal_column">Name</th>
+                    <th class="normal_column">Status</th>
+                    <th class="normal_column">Gateway</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">
+                        <span class="table_count"></span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

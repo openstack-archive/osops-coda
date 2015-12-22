@@ -1,0 +1,11 @@
+{% extends "coda/coda/coda_base.html" %}
+{% load staticfiles %}
+
+{% block title %}Error{% endblock %}
+
+{% block results %}
+    <div>
+        <h1 style="color: red; text-align: center">Error!</h1>
+        <h2 style="color: red; text-align: center">{{ error_message }}</h2>
+    </div>
+{% endblock %}

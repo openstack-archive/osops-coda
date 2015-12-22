@@ -1,0 +1,65 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        var csrftoken = Cookies.get('csrftoken');
+        var project_id = "{{ project_id }}";
+        var region = "{{ region }}";
+        var update_cache = "{{ update_cache }}";
+
+        $.post('/coda/floating_ips/', {csrfmiddlewaretoken: csrftoken, project_id: project_id, region: region, update_cache: update_cache}, function(data, status){
+            var tbody = $('#floatingips_{{ region }}_{{ project_id }}').find('tbody');
+            data = JSON.parse(data);
+
+            if(data.length > 0) {
+                $.each(data, function (i, floatingip) {
+                    var tr = $("<tr>");
+                    tr.append("<td>" + floatingip.id + "</td>");
+                    tr.append("<td>" + floatingip.floating_ip_address + "</td>");
+                    tr.append("<td>" + floatingip.fixed_ip_address + "</td>");
+                    tr.append("<td>" + floatingip.port_id + "</td>");
+                    tbody.append(tr);
+                });
+
+
+                var footerMessage = "Displaying " + data.length + " item";
+                if(data.length > 1)
+                    footerMessage+="s";
+
+                $('#floatingips_{{ region }}_{{ project_id }}').find('span').text(footerMessage);
+            } else {
+                var resultsDiv = $('#floatingips_{{ region }}_{{ project_id }}').find('#results');
+                resultsDiv.html("<h4>No Floating IPs in region.</h4>")
+            }
+            $('#floatingips_{{ region }}_{{ project_id }}').find('#querying').hide();
+            $('#floatingips_{{ region }}_{{ project_id }}').find('#results').show();
+        });
+    });
+</script>
+
+
+<div id="floatingips_{{ region }}_{{ project_id }}" class="table_wrapper">
+    <div id="querying">
+        <h3>Querying floating IPs for region: {{ region }}...</h3>
+    </div>
+    <div id="results" style="display: none">
+        <h3 class="table_title">Floating IPs</h3>
+        <table class="table table-bordered datatable">
+            <thead>
+                <tr>
+                    <th class="normal_column">UUID</th>
+                    <th class="normal_column">Floating Address</th>
+                    <th class="normal_column">Fixed Address</th>
+                    <th class="normal_column">Port ID</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">
+                        <span class="table_count"></span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

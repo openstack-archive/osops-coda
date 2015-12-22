@@ -1,0 +1,33 @@
+Coda
+======
+
+Coda is a Horizon dashboard and panel (both share the name) that facilitates resource clean up of a project once that project is no longer needed http://openstack.org
+
+Coda Dashboard
+----------------
+Coda Dashboard is an extension for OpenStack Dashboard that provides a UI for
+Coda. 
+
+For developer purposes, please place OpenStack Dashboard extension file, located
+at *local/_42_coda.py* under horizon/openstack_dashboard/local/enabled
+directory and run horizon as usual.
+
+You will need to add the following code to the end of your local_settings.py
+
+   def load_coda():
+       import imp
+   
+       #Go up a level, coda should be installed there.
+       local_settings_dir = os.path.split(os.path.dirname(os.path.realpath(__file__)))[0]
+       local_settings_dir+="/dashboards/coda"
+   
+       #print local_settings_dir
+       module = imp.load_source("coda", "%s/coda.py" % local_settings_dir)
+       for attr in dir(module):
+           if not attr.startswith('_'):
+               globals()[attr] = getattr(module, attr)
+   
+   load_coda()
+
+This makes sure that the coda.py file containing your settings are imported properly. This is probably a hack
+but I haven't found a better way to do this yet.

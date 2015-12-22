@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "Coda - Resource Cleanup" %}{% endblock %}
+
+{% block page_header %}
+  {% include "horizon/common/_page_header.html" with title=_("Coda - Resource Cleanup") %}
+{% endblock page_header %}
+
+{% block main %}
+<div>
+    <form id="coda_form" action="{% url 'horizon:coda:coda:results' %}" method="post" style="width: 655px">
+    {% csrf_token %}
+        <label for="project_id">Project ID:</label>
+        <input id="project_id" type="text" name="project_id" style="width: 400px" value="{% if project_id %}{{ project_id }}{%endif%}" autofocus="true" tabindex="10"/>
+        <input class="btn btn-primary" type="submit" value="Search" tabindex="20"/>
+        <input id="update_cache" type="checkbox" name="update_cache" value="True" tabindex="20" {% ifequal update_cache 'True' %}checked{%endifequal%}/> Update Cache
+    </form>
+</div>
+{% block results %}{% endblock %}
+{% endblock %}
+
+{% block js %}
+    {{ block.super }}
+
+    <script type="text/javascript" src="{{ STATIC_URL }}/coda/js/js.cookie.js"></script>
+    {% block custom_js %}{% endblock %}
+{% endblock %}

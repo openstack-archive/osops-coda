@@ -1,0 +1,54 @@
+{% extends "coda/coda/coda_base.html" %}
+{% load staticfiles %}
+
+{% block results %}
+<div id="main_content">
+    <div class="sidebar">
+        <h2>Project Info</h2>
+        <form id="coda_form" action="{% url 'horizon:coda:coda:confirm_delete' %}" method="post">
+        {% csrf_token %}
+            <p>Project Name: {{ project_info.tenant.name }}</p>
+            <p>Project ID: {{ project_info.tenant.id}}</p>
+            <p>Enabled: {{ project_info.tenant.enabled }}</p>
+            <p>Description: {{ project_info.tenant.description}}</p>
+            <input type="hidden" name="project_id" value="{{ project_id }}">
+            {% if users %}
+            <h4>Users:</h4>
+                {% for user in users %}
+                <p>Name: {{ user.name }}</p>
+                <p>Username: {{ user.username }}</p>
+                <p>ID: {{ user.id }}</p>
+                <p>Enabled: {{ user.enabled }}</p>
+                <p>E-Mail: {{ user.email }}</p>
+                {% endfor %}
+            {% else %}
+            <h4>No Users in this Project</h4>
+            {% endif %}
+
+            <div style="text-align: right; margin-right: 14px; margin-bottom: 10px;">
+                <a href="{% url 'horizon:coda:coda:index' %}">
+                    <input class="btn" type="button" value="Cancel" />
+                </a>
+                <input class="btn btn-primary" type="submit" value="Delete Resources">
+            </div>
+        </form>
+    </div>
+
+    <div id='content_body'>
+        <div class="tenant-header">
+            <h1>Resources for {{ project_id }}</h1>
+        </div>
+        {% for region in regions %}
+        <h2>Region: {{ region }}</h2>
+            {% include "coda/coda/instances.html" %}
+            {% include "coda/coda/floating_ips.html" %}
+            {% include "coda/coda/security_groups.html" %}
+            {% include "coda/coda/networks.html" %}
+            {% include "coda/coda/subnets.html" %}
+            {% include "coda/coda/routers.html" %}
+            {% include "coda/coda/volumes.html" %}
+            {% include "coda/coda/images.html" %}
+        {% endfor %} <!-- END region for loop -->
+    </div>
+</div>
+{% endblock %}

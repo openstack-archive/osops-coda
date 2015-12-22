@@ -1,0 +1,27 @@
+#!/bin/bash
+export CODA_USER_1=coda_user
+export CODA_USER_2=coda_user2
+
+export OS_PASSWORD=coda_p@ssw0rd
+
+export CODA_PROJECT_NAME_1="coda_project"
+export CODA_PROJECT_ID_1=project_guid
+
+
+export OS_AUTH_URL=http://127.0.0.1:5000/v2.0/
+#export OS_REGION_NAME=region-a.geo-1
+
+export NOVACLIENT_INSECURE=True
+export NEUTRONCLIENT_INSECURE=True
+export CINDERCLIENT_INSECURE=True
+
+export CODA_KEY=hpcloud
+
+export CODA_IMAGE_1=imgae_guid
+export CODA_IMAGE_2=imgae_guid
+export CODA_IMAGE_3=imgae_guid
+export CODA_IMAGE_4=imgae_guid
+
+export CODA_FLAVOR=2
+export CODA_AZ1=nova
+export CODA_AZ2=nova

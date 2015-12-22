@@ -1,0 +1,62 @@
+<script type="text/javascript">
+    $(document).ready(function(){
+        var csrftoken = Cookies.get('csrftoken');
+        var project_id = "{{ project_id }}";
+        var region = "{{ region }}";
+        var update_cache = "{{ update_cache }}";
+
+        $.post('/coda/networks/', {csrfmiddlewaretoken: csrftoken, project_id: project_id, region: region, update_cache: update_cache}, function(data, status){
+            var tbody = $('#networks_{{ region }}_{{ project_id }}').find('tbody');
+            data = JSON.parse(data);
+
+            if(data.length > 0) {
+                $.each(data, function (i, network) {
+                    var tr = $("<tr>");
+                    tr.append("<td>" + network.id + "</td>");
+                    tr.append("<td>" + network.name + "</td>");
+                    tr.append("<td>" + network.status + "</td>");
+                    tbody.append(tr);
+                });
+
+                var footerMessage = "Displaying " + data.length + " item";
+                if (data.length > 1)
+                    footerMessage += "s";
+
+                $('#networks_{{ region }}_{{ project_id }}').find('span').text(footerMessage);
+            } else {
+                var resultsDiv = $('#networks_{{ region }}_{{ project_id }}').find('#results');
+                resultsDiv.html("<h4>No Networks in region.</h4>")
+            }
+            $('#networks_{{ region }}_{{ project_id }}').find('#querying').hide();
+            $('#networks_{{ region }}_{{ project_id }}').find('#results').show();
+        });
+    });
+</script>
+
+
+<div id="networks_{{ region }}_{{ project_id }}" class="table_wrapper">
+    <div id="querying">
+        <h3>Querying networks for region: {{ region }}...</h3>
+    </div>
+    <div id="results" style="display: none">
+        <h3 class="table_title">Networks</h3>
+        <table class="table table-bordered datatable">
+            <thead>
+                <tr>
+                    <th class="normal_column">UUID</th>
+                    <th class="normal_column">Name</th>
+                    <th class="normal_column">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">
+                        <span class="table_count"></span>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
