@@ -1,0 +1,8 @@
+Code-Review+2: Mike Dorman <mdorman@godaddy.com>
+Workflow+1: Mike Dorman <mdorman@godaddy.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 18 Jan 2017 17:30:22 +0000
+Reviewed-on: https://review.openstack.org/421666
+Project: openstack/osops-coda
+Branch: refs/heads/master
