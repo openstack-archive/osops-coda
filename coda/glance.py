@@ -133,7 +133,7 @@ def get_next_images(auth_token, region, limit, images, marker):
             images = get_next_images(auth_token, region, limit, images, marker)
     else:
         # todo (nathan) throw exception here
-        print ("todo throw exception")
+        print("todo throw exception")
 
     return images
 

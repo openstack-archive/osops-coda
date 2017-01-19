@@ -52,7 +52,7 @@ def get_coda_token():
 
         result = json.loads(response.text)['access']['token']['id']
     except Exception as ex:
-        print ("error in get_coda_token", ex)
+        print("error in get_coda_token", ex)
 
     return result
 
@@ -92,7 +92,7 @@ def user_authenticate(tenant_id, username, password):
                                  verify=False)
         result = json.loads(response.text)['access']['token']['id']
     except Exception as ex:
-        print ("error in user_authenticate", ex)
+        print("error in user_authenticate", ex)
 
     return result
 
